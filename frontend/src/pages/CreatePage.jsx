@@ -7,6 +7,7 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
+import { Toaster, toaster } from "../components/ui/toaster";
 import { useColorModeValue } from "../components/ui/color-mode";
 import { useProductStore } from "../store/product";
 
@@ -23,6 +24,12 @@ function CreatePage() {
     const { success, message } = await createProduct(newProduct);
     console.log("success: ", success);
     console.log("message: ", message);
+    toaster.create({
+      title: success ? "Success" : "Warning",
+      description: message,
+      type: success ? "success" : "warning",
+    });
+    setNewProduct({ name: "", price: "", image: "" });
   };
 
   return (
@@ -71,6 +78,7 @@ function CreatePage() {
           </VStack>
         </Box>
       </VStack>
+      <Toaster />
     </Container>
   );
 }
