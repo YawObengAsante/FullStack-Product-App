@@ -1,5 +1,5 @@
 import { Button, Container, Flex, HStack, Text } from "@chakra-ui/react";
-import { useColorMode, useColorModeValue } from "./ui/color-mode";
+import { useColorMode } from "./ui/color-mode";
 import { Link } from "react-router-dom";
 import { CiSquarePlus } from "react-icons/ci";
 import { IoMoon } from "react-icons/io5";
