@@ -5,6 +5,17 @@ import {
   IconButton,
   Image,
   Text,
+  Button,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  VStack,
+  Input,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "./ui/color-mode";
 import { toaster, Toaster } from "./ui/toaster";
@@ -15,26 +26,29 @@ import { useProductStore } from "../store/product";
 function ProductCard({ product }) {
   const textColor = useColorModeValue("gray.600", "gray.200");
   const bg = useColorModeValue("white", "gray.800");
- 
-  const {deleteProduct} = useProductStore()
+
+  const { deleteProduct } = useProductStore();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleDeleteProduct = async (pid) => {
-    const {success, message} = deleteProduct(pid)
+    const { success, message } = await deleteProduct(pid);
     console.log("success: ", success);
     console.log("message: ", message);
     toaster.create({
-        title: success ? "Success" : "Error",
-        description: message,
-        type: success ? "success" : "error",
-      });
-  }
+      title: success ? "Success" : "Error",
+      description: message,
+      type: success ? "success" : "error",
+    });
+  };
+
   return (
     <Box
       shadow={"lg"}
       rounded={"lg"}
       overflow={"hidden"}
-      transition={"all 0.3s"}
-      _hover={{ transition: "translateY(-5px)", shadow: "xl" }}
+      transition={"transform 0.3s"}
+      _hover={{ transform: "translateY(-10px)", shadow: "xl" }}
       bg={bg}
     >
       <Image
@@ -52,12 +66,39 @@ function ProductCard({ product }) {
           ${product.price}
         </Text>
 
-        <HStack spaceX={2}>
-          <IconButton colorPalette={"blue"} ><FaRegEdit/></IconButton>
-          <IconButton colorPalette={"red"} onClick={()=>handleDeleteProduct(product._id)} ><MdOutlineDelete/></IconButton>
+        <HStack spacing={2}>
+          <IconButton
+            colorPalette={"blue"}
+            aria-label="Edit product"
+
+            //   onClick={onOpen}
+          >
+            <FaRegEdit />
+          </IconButton>
+          <IconButton
+            colorPalette={"red"}
+            aria-label="Delete product"
+            onClick={() => handleDeleteProduct(product._id)}
+          >
+            <MdOutlineDelete />
+          </IconButton>
         </HStack>
       </Box>
-      <Toaster/>
+      <Toaster />
+      <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Update Product</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <VStack spacing={4}>
+                <Input placeholder="Product Name" name="name" />
+                <Input placeholder="Price" name="price" type="number" />
+                <Input placeholder="Image URL" name="image" />
+              </VStack>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
     </Box>
   );
 }
