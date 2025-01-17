@@ -5,31 +5,19 @@ import {
   IconButton,
   Image,
   Text,
-  Button,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  VStack,
-  Input,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "./ui/color-mode";
 import { toaster, Toaster } from "./ui/toaster";
 import { FaRegEdit } from "react-icons/fa";
 import { MdOutlineDelete } from "react-icons/md";
 import { useProductStore } from "../store/product";
+import { Link } from "react-router-dom";
 
 function ProductCard({ product }) {
   const textColor = useColorModeValue("gray.600", "gray.200");
   const bg = useColorModeValue("white", "gray.800");
 
   const { deleteProduct } = useProductStore();
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleDeleteProduct = async (pid) => {
     const { success, message } = await deleteProduct(pid);
@@ -67,14 +55,14 @@ function ProductCard({ product }) {
         </Text>
 
         <HStack spacing={2}>
+          <Link to={`/edit/${product._id}`}> 
           <IconButton
             colorPalette={"blue"}
             aria-label="Edit product"
-
-            //   onClick={onOpen}
           >
             <FaRegEdit />
           </IconButton>
+          </Link>
           <IconButton
             colorPalette={"red"}
             aria-label="Delete product"
@@ -85,20 +73,6 @@ function ProductCard({ product }) {
         </HStack>
       </Box>
       <Toaster />
-      <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Update Product</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <VStack spacing={4}>
-                <Input placeholder="Product Name" name="name" />
-                <Input placeholder="Price" name="price" type="number" />
-                <Input placeholder="Image URL" name="image" />
-              </VStack>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
     </Box>
   );
 }

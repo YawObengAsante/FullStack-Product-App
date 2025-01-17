@@ -65,4 +65,13 @@ export const useProductStore = create((set) => ({
     }));
     return { success: true, message: data.message };
   },
+  editProduct: async (pid) => {
+    const res = await fetch(`/api/v1/products/${pid}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify()
+    })
+  }
 }));
