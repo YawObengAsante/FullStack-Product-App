@@ -11,11 +11,7 @@ import { useProductStore } from "../store/product";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 function EditProductPage() {
-    const [form, setForm] = useState({
-        name: '',
-        price: "",
-        image: ""
-    })
+  const [form, setForm] = useState({});
   const { editProduct, products } = useProductStore();
   const { id } = useParams();
 
@@ -27,18 +23,11 @@ function EditProductPage() {
     }
     return null;
   };
-  
+
   const product = findProduct(products, id);
-  setForm({
-    name: product.name,
-    price: product.price,
-    image: product.image
-  })
-  
+  setForm({product});
 
-  const handleEditProduct = () => {
-
-  };
+  const handleEditProduct = () => {};
   return (
     <Container maxW={"sm"}>
       <VStack spaceY={8}>
@@ -53,7 +42,7 @@ function EditProductPage() {
           shadow={"md"}
         >
           <VStack spaceY={8}>
-            <Input placeholder="Product Name" name="name" />
+            <Input placeholder="Product Name" name="name"  value={product.name}/>
             <Input placeholder="Price" name="price" type="number" />
             <Input placeholder="Image URL" name="image" />
             <Button colorPalette={"blue"} onClick={handleEditProduct}>
