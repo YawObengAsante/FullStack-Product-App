@@ -8,12 +8,14 @@ import {
 } from "@chakra-ui/react";
 import { useColorModeValue } from "../components/ui/color-mode";
 import { useProductStore } from "../store/product";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Toaster, toaster } from "../components/ui/toaster";
 function EditProductPage() {
-  const [form, setForm] = useState({});
-  const { editProduct, products } = useProductStore();
+  const [form, setForm] = useState({ name: "", price: "", image: "" });
+  const { updateProduct, products } = useProductStore();
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const findProduct = (products, id) => {
     for (let product of products) {
@@ -24,10 +26,45 @@ function EditProductPage() {
     return null;
   };
 
-  const product = findProduct(products, id);
-  setForm({product});
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prevState) => ({ ...prevState, [name]: value }));
+  };
 
-  const handleEditProduct = () => {};
+  useEffect(() => {
+    const product = findProduct(products, id);
+    if (product) {
+      setForm({
+        name: product.name,
+        price: product.price,
+        image: product.image,
+      });
+    }
+  }, [id, products]);
+
+  const handleUpdateProduct = async (id, form) => {
+    try {
+      if (form.name && form.price && form.image) {
+        const { success, message } = await updateProduct(id, form);
+        toaster.create({
+          title: success ? "Success" : "Error",
+          description: message,
+          type: success ? "success" : "error",
+        });
+      } else {
+        toaster.create({
+          title: "Warning",
+          description: "Plase fill all fields",
+          type: "warning",
+        });
+      }
+      setForm({ name: "", price: "", image: "" });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      navigate("/");
+    }
+  };
   return (
     <Container maxW={"sm"}>
       <VStack spaceY={8}>
@@ -42,15 +79,35 @@ function EditProductPage() {
           shadow={"md"}
         >
           <VStack spaceY={8}>
-            <Input placeholder="Product Name" name="name"  value={product.name}/>
-            <Input placeholder="Price" name="price" type="number" />
-            <Input placeholder="Image URL" name="image" />
-            <Button colorPalette={"blue"} onClick={handleEditProduct}>
+            <Input
+              placeholder="Product Name"
+              name="name"
+              value={form.name}
+              onChange={handleInputChange}
+            />
+            <Input
+              placeholder="Price"
+              name="price"
+              value={form.price}
+              type="number"
+              onChange={handleInputChange}
+            />
+            <Input
+              placeholder="Image URL"
+              name="image"
+              value={form.image}
+              onChange={handleInputChange}
+            />
+            <Button
+              colorPalette={"blue"}
+              onClick={() => handleUpdateProduct(id, form)}
+            >
               Edit Product
             </Button>
           </VStack>
         </Box>
       </VStack>
+      <Toaster />
     </Container>
   );
 }
