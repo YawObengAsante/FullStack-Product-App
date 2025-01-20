@@ -36,7 +36,7 @@ export const updateProduct = async (req, res) => {
   const {id: itemId} = req.params
   const product = req.body
   if (!mongoose.Types.ObjectId.isValid(itemId)) {
-    res.status(404).json({success: false, message: 'Product not Found'})
+    return res.status(404).json({success: false, message: 'Product not Found'})
   }
   try {
     const updatedProduct = await Product.findByIdAndUpdate(itemId, product, {
