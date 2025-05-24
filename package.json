@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon backend/app.js",
+    "dev": "nodemon backend/app.js",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
     "start": "node backend/app.js"
   },
@@ -13,6 +13,7 @@
   "type": "module",
   "description": "",
   "dependencies": {
+    "@minisylar/express-typed-router": "^1.0.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongoose": "^8.9.4",
