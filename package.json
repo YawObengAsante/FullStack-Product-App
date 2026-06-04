@@ -13,12 +13,12 @@
   "type": "module",
   "description": "",
   "dependencies": {
-    "@minisylar/express-typed-router": "^1.0.1",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "mongoose": "^8.9.4",
-    "react-icons": "^5.4.0",
-    "react-router-dom": ">=7.12.0",
-    "zustand": "^5.0.3"
+    "@minisylar/express-typed-router": "^1.9.3",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.6.3",
+    "react-icons": "^5.6.0",
+    "react-router-dom": ">=7.17.0",
+    "zustand": "^5.0.14"
   }
 }
